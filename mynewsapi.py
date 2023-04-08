@@ -1,11 +1,7 @@
-from dotenv import load_dotenv
+from tg_const import *
 from newsapi import NewsApiClient
 import os
 import json
-from tg_const import *
-
-load_dotenv()
-
 
 # Init
 newsapi = NewsApiClient(api_key=APIKEY)

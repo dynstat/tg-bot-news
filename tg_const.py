@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # getting the APIKEY from .env
 APIKEY = os.getenv("APIKEY")

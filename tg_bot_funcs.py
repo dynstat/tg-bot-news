@@ -1,12 +1,9 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-from tg_const import *
+from tg_const import BASE_URL, TGAPI, APIKEY
 import requests
 import json
 
 
-def get_all_updates():
+def read_reply_mssg():
     while True:
         print(f"{BASE_URL}/getUpdates")
         resp = requests.get(f"{BASE_URL}/getUpdates")
@@ -31,4 +28,4 @@ def send_mssg(recipient_id, text_to_send):
         print(f"Error while sending: {e}")
 
 
-get_all_updates()
+read_reply_mssg()
