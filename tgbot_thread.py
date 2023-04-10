@@ -6,7 +6,7 @@ import requests
 import mynewsapi
 
 comm_queue = []
-last_upd_id = 0
+last_upd_id = 688142593
 
 queue_lock = Lock()
 
@@ -52,26 +52,30 @@ def sender():
             if usr_txt_recvd == "hello":
                 txt_to_send = "Hiiii... Welcome !!!"
                 threading.Thread(
-                    target=send_mssg,
+                    target=send_all_mssg,
                     args=(usr_chat_id, txt_to_send),
                     name=f"sendThread-{mssg_upd_id}",
                 ).start()
             if usr_txt_recvd == "/news":
-                txt_to_send = mynewsapi.top_headlines()
+                headlines_list = mynewsapi.top_headlines()
                 threading.Thread(
-                    target=send_mssg,
-                    args=(usr_chat_id, *txt_to_send),
+                    target=send_all_mssg,
+                    args=(usr_chat_id, *headlines_list),
                     name=f"sendThread-{mssg_upd_id}",
                 ).start()
 
 
-def send_mssg(chat_id, *args):
+def send_mssg(chat_id, mssg_to_send):
+    res = requests.post(f"{BASE_URL}/sendMessage?chat_id={chat_id}&text={mssg_to_send}")
+    print(f"send Status for {chat_id} = {res}")
+
+
+def send_all_mssg(chat_id, *args):
     try:
-        for text_to_send in args:
-            res_status = requests.post(
-                f"{BASE_URL}/sendMessage?chat_id={chat_id}&text={text_to_send}"
-            )
-            print(f"send Status for {chat_id} = {res_status}")
+        for headline_to_send in args:
+            threading.Thread(
+                target=send_mssg, args=(chat_id, headline_to_send), name="MESSAGE_TO_TG"
+            ).start()
 
     except Exception as e:
         print(f"Error while sending: {e}")
