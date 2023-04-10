@@ -1,6 +1,7 @@
 import json
 import threading
 from threading import Lock
+from time import sleep
 from tg_const import BASE_URL, TGAPI, APIKEY
 import requests
 import mynewsapi
@@ -35,6 +36,7 @@ def updater():
                 comm_queue.append((upd_id, chat_id, usr_text))
                 queue_lock.release()  # Lock released
                 last_upd_id = upd_id
+        sleep(1)
 
 
 def sender():
