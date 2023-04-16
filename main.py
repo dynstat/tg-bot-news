@@ -1,8 +1,13 @@
+import threading
 from tg_const import *
+import logging
 
-import mynewsapi
-import tg_bot_funcs
+logging.basicConfig(
+    level=logging.INFO,
+)
+from tgbot_all_funcs import updater, sender
 
 
 if __name__ == "__main__":
-    pass
+    threading.Thread(target=updater, name="UPDATER").start()
+    threading.Thread(target=sender, name="SENDER").start()

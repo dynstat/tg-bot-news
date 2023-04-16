@@ -1,11 +1,12 @@
-import json
-import logging
 import threading
 from threading import Lock
 from time import sleep
 from tg_const import BASE_URL, TGAPI, APIKEY
+import logging
 import requests
+import json
 import mynewsapi
+
 
 comm_queue = []
 last_upd_id = 688142593
@@ -79,6 +80,7 @@ def send_mssg(chat_id, mssg_to_send):
         res = requests.post(
             f"{BASE_URL}/sendMessage?chat_id={chat_id}&text={mssg_to_send}"
         )
+        # print(f"send Status for {chat_id} = {res}")
         logging.info(f"send Status for {chat_id} = {res}")
     except Exception as e:
         print(f"Error occurred actual send mssg tg bot api: {e}")
@@ -93,8 +95,3 @@ def send_all_mssg(chat_id, *args):
 
     except Exception as e:
         print(f"Error while sending: {e}")
-
-
-if __name__ == "__main__":
-    threading.Thread(target=updater, name="UPDATER").start()
-    threading.Thread(target=sender, name="SENDER").start()
