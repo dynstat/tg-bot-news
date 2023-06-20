@@ -71,6 +71,13 @@ def sender():
                         args=(usr_chat_id, *headlines_list),
                         name=f"sendThread-{mssg_upd_id}",
                     ).start()
+                if usr_txt_recvd == "/link":
+                    url = f"http://127.0.0.1:8000/link?tgid={usr_chat_id}"
+                    threading.Thread(
+                        target=link_with_blog,
+                        args=(usr_chat_id, url),
+                        name=f"sendThread-{mssg_upd_id}",
+                    ).start()
         except Exception as e:
             print(f"Error occurred while sending replies: {e}")
 
@@ -95,3 +102,14 @@ def send_all_mssg(chat_id, *args):
 
     except Exception as e:
         print(f"Error while sending: {e}")
+
+
+def link_with_blog(chat_id, url):
+    try:
+        res = requests.post(
+            f"{BASE_URL}/sendMessage?chat_id={chat_id}&text=like karo idhr se {url}"
+        )
+        # print(f"send Status for {chat_id} = {res}")
+        logging.info(f"send Status for {chat_id} = {res}")
+    except Exception as e:
+        print(f"Error occurred actual send mssg tg bot api: {e}")
